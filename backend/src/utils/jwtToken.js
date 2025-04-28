@@ -15,3 +15,8 @@ export const generateToken = (userId, res) => {
 
   return token;
 };
+
+export const generateResetToken = (userId,res) => {
+  const token = jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: "15m" });
+  return token;
+}

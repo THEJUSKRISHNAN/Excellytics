@@ -1,1 +1,5 @@
 @import "tailwindcss";
+@theme {
+    /* --color-green-500: oklch(0.49 0.82 0.12); */
+  }
+@plugin "daisyui";
