@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 const WelcomePage = () => {
     const navigate = useNavigate();
     return (
-        <div className='flex flex-col lg:flex-row min-h-screen justify-around items-center bg-gray-100 p-4 mx-2'>
+        <div className='flex flex-col xl:flex-row min-h-screen justify-around items-center bg-gray-100 p-4 mt-8 xl:mt-0'>
             <div className='w-full lg:w-1/2 flex flex-col gap-6 lg:gap-10 lg:ml-8 mb-8 lg:mb-0'>
                 <h1 className='font-bold text-4xl md:text-5xl lg:text-6xl text-center lg:text-left'>Unlock the Potential of Your Data</h1>
                 <p className='font-semibold text-xl md:text-2xl lg:text-3xl text-center lg:text-left'> Sign in to upload and analyse your Excel file</p>
