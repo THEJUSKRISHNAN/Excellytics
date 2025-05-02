@@ -12,6 +12,7 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import { useSelector, useDispatch } from 'react-redux';
 import { checkAuth } from './store/auth-slice/authSlice';
+import WelcomePage from './pages/WelcomePage';
 
 function App() {
 
@@ -43,10 +44,11 @@ function App() {
       <Navbar />
 
       <Routes>
-        <Route path="/" element={authUser ? <HomePage /> : <Navigate to='/login' />} />
-        <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to="/" />} />
-        <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" />} />
-        <Route path="/profile" element={ authUser ? <ProfilePage /> : <Navigate to = '/login'/> } />
+        <Route path="/" element={!authUser? <WelcomePage/> :  <Navigate to="/home" />} />
+        <Route path="/home" element={authUser ? <HomePage /> : <Navigate to='/login' />} />
+        <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to="/home" />} />
+        <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/home" />} />
+        <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to='/login' />} />
         <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
         <Route path="/resetpassword" element={<ResetPasswordPage />} />
 

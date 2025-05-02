@@ -18,7 +18,7 @@ const Navbar = () => {
     backdrop-blur-lg bg-base-100/80"
     >
 
-      <div className="container mx-auto px-4 h-16">
+      <div className="container mx-auto px-4 h-20">
       
         <div className="flex items-center justify-between h-full">
 
@@ -27,7 +27,7 @@ const Navbar = () => {
               <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center">
                 <FileChartColumnIncreasing className="w-7 h-7 text-green-500 hover:text-green-700"/>
               </div>
-              <h1 className="text-lg font-bold">Excellytics</h1>
+              <h1 className="text-3xl font-bold">Excellytics</h1>
             </Link>
           </div>
 
