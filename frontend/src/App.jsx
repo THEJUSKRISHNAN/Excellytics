@@ -1,7 +1,5 @@
 import './App.css';
-import Navbar from './components/Navbar'
-import { Routes, Route, Navigate } from "react-router-dom"
-import HomePage from "./pages/HomePage";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom"
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -13,10 +11,22 @@ import ResetPasswordPage from './pages/ResetPasswordPage';
 import { useSelector, useDispatch } from 'react-redux';
 import { checkAuth } from './store/auth-slice/authSlice';
 import WelcomePage from './pages/WelcomePage';
+import ExcelUpload from './pages/ExcelUploadPage';
+import Navbar from "./components/common/Navbar";
+import HistoryPage from "./pages/HistoryPage"
+import DashboardPage from './pages/DashboardPage';
+import SidebarLayout from './layouts/SidebarLayout';
 
 function App() {
 
   const dispatch = useDispatch();
+
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const showNavbarRoutes = ["/", "/login", "/signup", "/forgotpassword", "/resetpassword"];
+  const showNavbar = showNavbarRoutes.includes(currentPath);
+
+
 
   // Accessing Redux state
   const authUser = useSelector((state) => state.auth.authUser);
@@ -36,27 +46,32 @@ function App() {
     );
   }
 
-
-
   return (
 
-      <>
-      <Navbar />
+    <>
+      {showNavbar && <Navbar />}
+
 
       <Routes>
-        <Route path="/" element={!authUser? <WelcomePage/> :  <Navigate to="/home" />} />
-        <Route path="/home" element={authUser ? <HomePage /> : <Navigate to='/login' />} />
-        <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to="/home" />} />
-        <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/home" />} />
-        <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to='/login' />} />
+        <Route path="/" element={!authUser ? <WelcomePage /> : <Navigate to="/dashboard" />} />
+        <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to="/dashboard" />} />
+        <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/dashboard" />} />
         <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
         <Route path="/resetpassword" element={<ResetPasswordPage />} />
+
+        {/* Protected Sidebar Routes */}
+        <Route element={<SidebarLayout />}>
+          <Route path="/dashboard" element={authUser ? <DashboardPage /> : <Navigate to="/login" />} />
+          <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
+          <Route path="/excelupload" element={authUser ? <ExcelUpload /> : <Navigate to="/login" />} />
+          <Route path='/history' element={authUser ? <HistoryPage /> : <Navigate to="/login" />} />
+        </Route>
 
       </Routes>
 
       <Toaster />
     </>
-      
+
 
   )
 }

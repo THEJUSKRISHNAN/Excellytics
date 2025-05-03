@@ -1,5 +1,5 @@
 import React from 'react'
-import Carousel from '../components/Carousel'
+import Carousel from '../components/common/Carousel'
 import { useNavigate } from 'react-router-dom';
 
 const WelcomePage = () => {

@@ -1,8 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import image1 from "../assets/ai.png";
-import image2 from "../assets/chart.png";
-import image3 from "../assets/history.png"
+import image1 from "../../assets/ai.png";
+import image2 from "../../assets/chart.png";
+import image3 from "../../assets/history.png"
+
+
 
 const images = [
     image1,
