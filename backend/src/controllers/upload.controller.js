@@ -1,9 +1,11 @@
 import Upload from "../models/upload.model.js";
 import XLSX from "xlsx";
-import User from "../models/user.model.js";
+import fs from "fs";
+import path from "path";
 
 export const uploadFile = async (req, res) => {
   try {
+    const fileSize = req.file.size;
     const workbook = XLSX.read(req.file.buffer, { type: "buffer" });
     const sheetName = workbook.SheetNames[0];
     const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
@@ -11,6 +13,7 @@ export const uploadFile = async (req, res) => {
     const saved = await Upload.create({
       userId: req.user.id,
       filename: req.file.originalname,
+      fileSize: fileSize,
       data: sheetData,
     });
 
@@ -59,5 +62,51 @@ export const downloadFile = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.message });
     console.log(err);
+  }
+};
+
+export const getDashboardStats = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const uploads = await Upload.find({ userId });
+    const totalUploads = uploads.length;
+
+    // latst uploaded file
+    const recentUpload = uploads[uploads.length - 1]?.filename || "N/A";
+
+    // Calculate storage used
+    let totalBytes = 0;
+    uploads.forEach((upload) => {
+      totalBytes += upload.fileSize || 0;
+    });
+
+    const storageUsed = `${(totalBytes / (1024 * 1024)).toFixed(2)} MB`;
+    
+    //  ai
+    const Insight =totalUploads > 0 ? `You've uploaded ${totalUploads} files. Keep analyzing to discover trends.`: "Upload your first file to get smart insights.";
+        
+    // chart
+    const uploadsDate = await Upload.find({ userId }).sort({ uploadedAt: 1 });
+    const dataByDate = {};
+
+        uploadsDate.forEach(upload => {
+      const date = new Date(upload.uploadedAt).toISOString().split("T")[0]; // Format: YYYY-MM-DD
+      dataByDate[date] = (dataByDate[date] || 0) + 1;
+    });
+   
+
+    return res.json({
+      stats: {
+        totalUploads,
+        recentUpload,
+        storageUsed,
+      },
+      Insight,
+      dataByDate
+    });
+  } catch (error) {
+    console.error("Dashboard Error:", error.message);
+    return res.status(500).json({ message: "Failed to fetch dashboard stats" });
   }
 };

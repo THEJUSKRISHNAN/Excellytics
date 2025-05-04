@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 
 const UploadSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  filename: String,
+  filename: {type: String},
+  fileSize: { type: Number },
   uploadedAt: { type: Date, default: Date.now },
   data: [{}],
 });

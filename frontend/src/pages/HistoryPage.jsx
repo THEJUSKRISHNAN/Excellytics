@@ -14,6 +14,7 @@ const UploadHistoryPage = () => {
                 setUploads(response.data);
             } catch (err) {
                 setError('Failed to load upload history');
+                console.log(err);
             } finally {
                 setIsLoading(false);
             }
