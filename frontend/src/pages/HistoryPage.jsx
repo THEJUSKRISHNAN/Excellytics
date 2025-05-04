@@ -46,7 +46,7 @@ const UploadHistoryPage = () => {
       };
 
     return (
-        <div className=' bg-gray-100 h-screen'>
+        <div className=' bg-gray-100 min-h-screen'>
         <Header title="History"/>
             <div className="max-w-xl mx-auto px-4 py-10 font-sansmin-h-screen">
                 <h2 className="text-3xl font-bold mb-6">Upload History</h2>
