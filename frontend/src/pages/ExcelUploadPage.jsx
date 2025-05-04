@@ -8,6 +8,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 import { LineElement, PointElement, ArcElement } from 'chart.js';
 import Plot from 'react-plotly.js';
 import Chart from 'chart.js/auto';
+import { axiosInstance } from '../services/axios';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 ChartJS.register(LineElement, PointElement, ArcElement);
@@ -108,6 +109,21 @@ export default function ExcelUploadPage() {
     reader.readAsArrayBuffer(file);
   };
 
+  const uploadFileFn = async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await axiosInstance.post("/upload/uploadFile",formData);
+      toast.success("File uploaded to database");
+      return res.data;
+      
+    } catch (error) {
+      toast.error(error.response?.data?.message || "upload file failed");
+      console.log(error)
+    
+    }
+
+  }
   // for x,y,chart type
   const getChartData = () => {
     if (!xAxis || !yAxis || data.length === 0) return {};
@@ -162,6 +178,7 @@ export default function ExcelUploadPage() {
     const file = e.target.files[0];
     if (file && file.name.endsWith('.xlsx')) {
       parseExcel(file);
+      uploadFileFn(file)
     } else {
       toast.error("Please upload a valid .xlsx file");
     }
@@ -172,6 +189,7 @@ export default function ExcelUploadPage() {
     const file = e.dataTransfer.files[0];
     if (file && file.name.endsWith('.xlsx')) {
       parseExcel(file);
+      uploadFileFn(file);
     } else {
       toast.error("Please upload a valid .xlsx file");
     }

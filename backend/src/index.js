@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth.route.js";
+import uploadRoute from "./routes/upload.route.js"
 import connectDB  from "./config/db.js";
 import cookieParser from "cookie-parser"
 import cors from "cors"
@@ -24,6 +25,7 @@ app.use(cors({
 }))
 
 app.use("/api/auth",authRoutes)
+app.use("/api/upload",uploadRoute)
 
 app.listen(PORT,()=>{
   console.log("server is running in port : " + PORT);
