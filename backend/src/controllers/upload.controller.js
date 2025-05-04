@@ -28,7 +28,8 @@ export const history = async (req, res) => {
     const uploads = await Upload.find(
       { userId: req.user.id },
       "filename uploadedAt"
-    );
+    ).sort({ uploadedAt: -1 }); // Sort by newest first
+
     res.json(uploads);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -96,10 +97,6 @@ export const getDashboardStats = async (req, res) => {
       dataByDate[localDate] = (dataByDate[localDate] || 0) + 1;
     });
     
-    console.log(dataByDate);
-
-   
-
     return res.json({
       stats: {
         totalUploads,
