@@ -90,10 +90,14 @@ export const getDashboardStats = async (req, res) => {
     const uploadsDate = await Upload.find({ userId }).sort({ uploadedAt: 1 });
     const dataByDate = {};
 
-        uploadsDate.forEach(upload => {
-      const date = new Date(upload.uploadedAt).toISOString().split("T")[0]; // Format: YYYY-MM-DD
-      dataByDate[date] = (dataByDate[date] || 0) + 1;
+    uploadsDate.forEach(upload => {
+      const date = new Date(upload.uploadedAt);
+      const localDate = date.toLocaleDateString('en-CA'); // "YYYY-MM-DD"
+      dataByDate[localDate] = (dataByDate[localDate] || 0) + 1;
     });
+    
+    console.log(dataByDate);
+
    
 
     return res.json({
