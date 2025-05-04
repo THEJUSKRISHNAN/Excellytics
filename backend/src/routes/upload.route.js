@@ -12,7 +12,7 @@ router.post("/uploadFile",protectRoute,upload.single("file"),uploadFile);
 
 router.get("/history",protectRoute,history);
 
-router.get("/download",protectRoute,downloadFile);
+router.post("/downloadFile",protectRoute,downloadFile);
 
 
 export default router;
