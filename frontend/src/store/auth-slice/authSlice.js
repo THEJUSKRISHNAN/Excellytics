@@ -1,15 +1,17 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { axiosInstance } from '../../services/axios';
 import toast from 'react-hot-toast';
-
+import { fetchDashboardData, fetchUploadHistory } from '../dashboard-slice/dashboardSlice';
 // BASE URL
 const BASE_URL = "http://localhost:5001";
 
 // Async Thunks
 
-export const checkAuth = createAsyncThunk('auth/checkAuth', async (_, { rejectWithValue }) => {
+export const checkAuth = createAsyncThunk('auth/checkAuth', async (_, { rejectWithValue, dispatch }) => {
   try {
     const res = await axiosInstance.get("/auth/check");
+    dispatch(fetchDashboardData());
+    dispatch(fetchUploadHistory());
     return res.data;
   } catch (error) {
     console.error("Error in checkAuth: ", error);
@@ -17,10 +19,12 @@ export const checkAuth = createAsyncThunk('auth/checkAuth', async (_, { rejectWi
   }
 });
 
-export const signup = createAsyncThunk('auth/signup', async (data, { rejectWithValue }) => {
+export const signup = createAsyncThunk('auth/signup', async (data, { rejectWithValue, dispatch }) => {
   try {
     const res = await axiosInstance.post("/auth/signup", data);
     toast.success("Account created successfully");
+    dispatch(fetchDashboardData());
+    dispatch(fetchUploadHistory());
     return res.data;
   } catch (error) {
     toast.error(error.response?.data?.message || "Signup failed");
@@ -28,10 +32,12 @@ export const signup = createAsyncThunk('auth/signup', async (data, { rejectWithV
   }
 });
 
-export const login = createAsyncThunk('auth/login', async (data, { rejectWithValue }) => {
+export const login = createAsyncThunk('auth/login', async (data, { rejectWithValue, dispatch }) => {
   try {
     const res = await axiosInstance.post("/auth/login", data);
     toast.success("Logged in successfully");
+    dispatch(fetchDashboardData());
+    dispatch(fetchUploadHistory());
     return res.data;
   } catch (error) {
     toast.error(error.response?.data?.message || "Login failed");

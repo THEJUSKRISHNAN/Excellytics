@@ -8,7 +8,8 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 import { LineElement, PointElement, ArcElement } from 'chart.js';
 import Plot from 'react-plotly.js';
 import Chart from 'chart.js/auto';
-import { axiosInstance } from '../services/axios';
+import { useDispatch } from 'react-redux';
+import { uploadFile } from '../store/dashboard-slice/dashboardSlice';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 ChartJS.register(LineElement, PointElement, ArcElement);
@@ -19,6 +20,8 @@ export default function ExcelUploadPage() {
   const chartRef1 = useRef(null);
   const chartRef2 = useRef(null);
 
+  const dispatch = useDispatch();
+  
   // for x,y,chart type
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState([]);
@@ -111,12 +114,9 @@ export default function ExcelUploadPage() {
 
   const uploadFileFn = async (file) => {
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      const res = await axiosInstance.post("/upload/uploadFile",formData);
-      toast.success("File uploaded to database");
-      return res.data;
-      
+
+      dispatch(uploadFile(file));    
+        
     } catch (error) {
       toast.error(error.response?.data?.message || "upload file failed");
       console.log(error)
